@@ -14,6 +14,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.FileProvider
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.textfield.TextInputLayout
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.analytics.ktx.logEvent
+import com.google.firebase.ktx.Firebase
 import com.obsez.android.lib.filechooser.ChooserDialog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -36,6 +39,8 @@ import kotlin.io.path.Path
 private const val TYPE_ZIP = "application/zip"
 
 class ExtractActivity : ComponentActivity() {
+
+    private val analytics = Firebase.analytics
 
     private lateinit var dialog: AlertDialog
 
@@ -60,11 +65,13 @@ class ExtractActivity : ComponentActivity() {
         lifecycleScope.launchWhenStarted {
             val rootDir = extract(uri)
             if (rootDir != null) {
+                analytics.logEvent("extraction_succeeded", null)
                 ChooserDialog(this@ExtractActivity, R.style.Theme_Extractor_ChooserDialog)
                     .withStartFile(rootDir.path)
                     .displayPath(false)
                     .withNavigateUpTo { it != cacheDir }
                     .withChosenListener { path, file ->
+                        val type = guessType(MimeTypeMap.getFileExtensionFromUrl(path))
                         val folderIntent = Intent(Intent.ACTION_VIEW)
                         folderIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                         folderIntent.setDataAndType(
@@ -73,8 +80,12 @@ class ExtractActivity : ComponentActivity() {
                                 "${applicationContext.packageName}.provider",
                                 file
                             ),
-                            guessType(MimeTypeMap.getFileExtensionFromUrl(path))
+                            type
                         )
+
+                        analytics.logEvent("file_opened") {
+                            param("type", type)
+                        }
 
                         finish()
                         overridePendingTransition(0, 0)
@@ -99,7 +110,15 @@ class ExtractActivity : ComponentActivity() {
                     .build()
                     .show()
             } else {
-                Toast.makeText(this@ExtractActivity, "Failed to open archive ${uri.lastPathSegment}", Toast.LENGTH_LONG).show()
+                val fileName = uri.lastPathSegment
+                analytics.logEvent("extraction_failed") {
+                    param("file", fileName.toString())
+                }
+                Toast.makeText(
+                    this@ExtractActivity,
+                    "Failed to open archive $fileName",
+                    Toast.LENGTH_LONG
+                ).show()
                 finish()
                 overridePendingTransition(0, 0)
             }
@@ -159,10 +178,18 @@ class ExtractActivity : ComponentActivity() {
                     }
                 }
             } catch (e: ZipException) {
-                e.message?.let { Log.i("ZIP", it) }
+                e.message?.let {
+                    analytics.logEvent("exception") {
+                        param("message", it)
+                    }
+                }
                 null
-            } catch (ignored: IOException) {
-                ignored.printStackTrace()
+            } catch (e: IOException) {
+                e.message?.let {
+                    analytics.logEvent("exception") {
+                        param("message", it)
+                    }
+                }
                 null
             } finally {
                 dialog.dismiss()
@@ -175,7 +202,11 @@ class ExtractActivity : ComponentActivity() {
     @Throws(IOException::class)
     private suspend fun obtainPassword(uri: Uri): CharArray? =
         contentResolver.openInputStream(uri)?.use {
-            if (HeaderReader().readLocalFileHeader(it, CHARSET_UTF_8).isEncrypted) {
+            val encrypted = HeaderReader().readLocalFileHeader(it, CHARSET_UTF_8).isEncrypted
+            analytics.logEvent("encryption_check") {
+                param("encryption", "$encrypted")
+            }
+            if (encrypted) {
                 withContext(Dispatchers.Main) {
                     suspendCoroutine { continuation ->
                         showPasswordDialog(continuation)

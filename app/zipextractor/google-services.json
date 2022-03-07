@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1049310508001",
+    "project_id": "zip-extractor-3152a",
+    "storage_bucket": "zip-extractor-3152a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1049310508001:android:f29e7abba0093c5c6718a0",
+        "android_client_info": {
+          "package_name": "com.kacera.zipextractor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1049310508001-0bu9nu5shd1fhkneoj2s9b0116n6qf86.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCoNENFuVd1YNwhteZNS0sgtQm-HFEPHj4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1049310508001-0bu9nu5shd1fhkneoj2s9b0116n6qf86.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
