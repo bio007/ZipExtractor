@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.kacera.zipextractor">
+
+    <application
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Extractor"
+        tools:replace="android:allowBackup">
+
+        <activity
+            android:name=".ExtractActivity"
+            android:excludeFromRecents="true"
+            android:exported="true">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:mimeType="application/zip"
+                    android:scheme="http" />
+                <data
+                    android:mimeType="application/x-zip"
+                    android:scheme="http" />
+                <data
+                    android:mimeType="application/x-zip-compressed"
+                    android:scheme="http" />
+                <data
+                    android:mimeType="application/zip"
+                    android:scheme="https" />
+                <data
+                    android:mimeType="application/x-zip"
+                    android:scheme="https" />
+                <data
+                    android:mimeType="application/x-zip-compressed"
+                    android:scheme="https" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data
+                    android:mimeType="application/zip"
+                    android:scheme="content" />
+                <data
+                    android:mimeType="application/x-zip"
+                    android:scheme="content" />
+                <data
+                    android:mimeType="application/x-zip-compressed"
+                    android:scheme="content" />
+                <data
+                    android:mimeType="application/zip"
+                    android:scheme="file" />
+                <data
+                    android:mimeType="application/x-zip"
+                    android:scheme="file" />
+                <data
+                    android:mimeType="application/x-zip-compressed"
+                    android:scheme="file" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <data android:scheme="file" />
+                <data android:scheme="content" />
+                <data android:mimeType="*/*" />
+                <data android:host="*" />
+                <data android:pathPattern=".*\\.zipx" />
+                <data android:pathPattern=".*\\.zipX" />
+                <data android:pathPattern=".*\\.ziPx" />
+                <data android:pathPattern=".*\\.ziPX" />
+                <data android:pathPattern=".*\\.zIpx" />
+                <data android:pathPattern=".*\\.zIpX" />
+                <data android:pathPattern=".*\\.zIPx" />
+                <data android:pathPattern=".*\\.zIPX" />
+                <data android:pathPattern=".*\\.Zipx" />
+                <data android:pathPattern=".*\\.ZipX" />
+                <data android:pathPattern=".*\\.ZiPx" />
+                <data android:pathPattern=".*\\.ZiPX" />
+                <data android:pathPattern=".*\\.ZIpx" />
+                <data android:pathPattern=".*\\.ZIpX" />
+                <data android:pathPattern=".*\\.ZIPx" />
+                <data android:pathPattern=".*\\.ZIPX" />
+            </intent-filter>
+        </activity>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+
+    </application>
+
+</manifest>

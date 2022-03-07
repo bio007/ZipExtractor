@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">ZipExtractor</string>
+    <string name="hint_password">password</string>
+    <string name="extracting">Extracting</string>
+    <string name="open_with">Open with</string>
+    <string name="insert_password">Insert password</string>
+    <string name="close">Close</string>
+</resources>

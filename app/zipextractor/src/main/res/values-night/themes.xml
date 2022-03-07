@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.Extractor" parent="Theme.MaterialComponents.DayNight.Dialog">
+        <item name="colorPrimary">@color/teal_100</item>
+    </style>
+
+    <style name="Theme.Extractor.Dialog" parent="@style/FileChooserStyle">
+        <item name="colorPrimary">@color/teal_100</item>
+        <item name="colorPrimaryVariant">@color/blue_50</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation</item>
+        <item name="android:windowDisablePreview">true</item>
+    </style>
+</resources>
