@@ -70,7 +70,7 @@ class ExtractActivity : ComponentActivity() {
                     .withStartFile(rootDir.path)
                     .displayPath(false)
                     .withNavigateUpTo { it != cacheDir }
-                    .withChosenListener { path, file ->
+                    .withChosenListener { path, file, dismissed ->
                         val type = guessType(MimeTypeMap.getFileExtensionFromUrl(path))
                         val folderIntent = Intent(Intent.ACTION_VIEW)
                         folderIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
@@ -87,7 +87,7 @@ class ExtractActivity : ComponentActivity() {
                             param("type", type)
                         }
 
-                        finish()
+                        if (dismissed) finish()
                         overridePendingTransition(0, 0)
 
                         startActivity(
