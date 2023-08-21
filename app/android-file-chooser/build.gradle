@@ -3,14 +3,13 @@ plugins {
 }
 
 android {
-    compileSdkVersion 31
+    namespace 'com.obsez.android.lib.filechooser'
+    compileSdk 31
     resourcePrefix "obsez_fc__"
 
     defaultConfig {
         minSdk 26
         targetSdk 31
-        versionCode 1
-        versionName "1.0"
 
         consumerProguardFiles 'proguard-rules.pro'
     }

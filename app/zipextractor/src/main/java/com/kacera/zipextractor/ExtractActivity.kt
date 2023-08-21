@@ -1,6 +1,5 @@
 package com.kacera.zipextractor
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -131,7 +130,6 @@ class ExtractActivity : ComponentActivity() {
         }
     }
 
-    @Suppress("BlockingMethodInNonBlockingContext")
     private suspend fun extract(uri: Uri): File? {
         return withContext(Dispatchers.IO) {
             try {
@@ -198,7 +196,6 @@ class ExtractActivity : ComponentActivity() {
     }
 
     @WorkerThread
-    @Suppress("BlockingMethodInNonBlockingContext")
     @Throws(IOException::class)
     private suspend fun obtainPassword(uri: Uri): CharArray? =
         contentResolver.openInputStream(uri)?.use {
@@ -217,7 +214,6 @@ class ExtractActivity : ComponentActivity() {
             }
         }
 
-    @SuppressLint("InflateParams")
     private fun showPasswordDialog(continuation: Continuation<CharArray?>) {
         val dialog = AlertDialog.Builder(this, R.style.Theme_Extractor)
             .setView(R.layout.layout_input)
